@@ -1,0 +1,19 @@
+% svm_classification.m
+% SVM classification with cross-validation on Iris dataset
+
+% Load dataset
+load fisheriris
+X = meas;          % features
+Y = species;       % labels
+
+% Create SVM template
+t = templateSVM('KernelFunction','linear','Standardize',true);
+
+% Perform 5-fold cross-validation
+cvmodel = fitcecoc(X,Y,'Learners',t,'KFold',5);
+
+% Compute cross-validation accuracy
+kfoldLossVal = kfoldLoss(cvmodel);
+accuracy = 1 - kfoldLossVal;
+
+fprintf('Cross-validation Accuracy: %.2f%%\n', accuracy*100)
